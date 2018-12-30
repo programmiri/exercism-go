@@ -1,28 +1,50 @@
-// This is a "stub" file.  It's a little start on your solution.
-// It's not a complete solution though; you have to write some code.
-
-// Package triangle should have a package comment that summarizes what it's about.
-// https://golang.org/doc/effective_go.html#commentary
+// Package triangle implements methods for triangles
 package triangle
 
+import "math"
 
-// Notice KindFromSides() returns this type. Pick a suitable data type.
-type Kind
+// Kind represents the kind of triangle
+type Kind int
 
 const (
-    // Pick values for the following identifiers used by the test program.
-    NaT // not a triangle
-    Equ // equilateral
-    Iso // isosceles
-    Sca // scalene
+  // Equ is equilateral
+  Equ = iota
+  // Iso is isosceles
+  Iso
+  // Sca is scalene
+  Sca
+  // NaT is not a triangle
+  NaT
 )
 
-// KindFromSides should have a comment documenting it.
+func isNaT(a, b, c float64) bool {
+  sides := []float64{a, b, c}
+  is := false
+
+  for _, side := range sides {
+    if math.IsNaN(side) || math.IsInf(side, 0) || side <= 0 {
+      is = true
+    }
+  }
+
+  if is || (a+b < c || b+c < a || a+c < b) {
+    return true
+  }
+  return false
+}
+
+// KindFromSides setermines if a triangle is equilateral, isosceles, or scalene.
 func KindFromSides(a, b, c float64) Kind {
-	// Write some code here to pass the test suite.
-	// Then remove all the stock comments.
-	// They're here to help you get started but they only clutter a finished solution.
-	// If you leave them in, reviewers may protest!
-	var k Kind
-	return k
+  if isNaT(a, b, c) {
+    return NaT
+  }
+
+  if a == b && b == c {
+    return Equ
+  }
+
+  if a == b || a == c || b == c {
+    return Iso
+  }
+  return Sca
 }
