@@ -1,28 +1,26 @@
 //Package raindrops adds a method to translate numbers in raindrop-speak
 package raindrops
 
-import "strconv"
+import (
+        "strconv"
+        "strings"
+)
 
 // Convert converts a number to a string in raindrop-speak
 func Convert(num int) string {
-        var result string
-        factorable := 0
+        var r []string
         if num%3 == 0 {
-                result = result + "Pling"
-                factorable++
+                r = append(r, "Pling")
         }
         if num%5 == 0 {
-                result = result + "Plang"
-                factorable++
+                r = append(r, "Plang")
         }
         if num%7 == 0 {
-                result = result + "Plong"
-                factorable++
-        }
-        if factorable == 0 {
-                return strconv.Itoa(num)
-        } else {
-                return result
+                r = append(r, "Plong")
         }
 
+        if len(r) == 0 {
+                r = append(r, strconv.Itoa(num))
+        }
+        return strings.Join(r, "")
 }
